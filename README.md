@@ -2,13 +2,13 @@
 
 # hbm-skills
 
-**AI coding agent'lar icin akilli skill koleksiyonu**
+**Smart skill collection for AI coding agents**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Skills: 1](https://img.shields.io/badge/skills-1-brightgreen.svg)](#-available-skills)
 [![Platform: skills.sh](https://img.shields.io/badge/platform-skills.sh-black.svg)](https://skills.sh/)
 
-_[skills.sh](https://skills.sh/) ekosistemi icin yeniden kullanilabilir skill paketleri — Claude Code, Cursor, Windsurf, Cline, Copilot ve daha fazlasiyla calisir._
+_Reusable instruction packs for the [skills.sh](https://skills.sh/) ecosystem — works with Claude Code, Cursor, Windsurf, Cline, Copilot, and more._
 
 </div>
 
@@ -33,19 +33,19 @@ npx skills add halilbarim/hbm-skills@memory-bank
 
 ## memory-bank
 
-Oturumlar arasi baglam surekliligi saglayan Memory Bank sistemi. Proje kokunde `memory-bank/` dizini olusturur ve 7 yapilandirilmis markdown dosyasiyla proje bilgisini, mimari kararlari, ilerlemeyi ve aktif baglami saklar.
+A cross-session context continuity system for AI coding agents. Creates a `memory-bank/` directory in the project root with 7 structured markdown files that capture project knowledge, architecture decisions, progress, and active context.
 
-### Ozellikler
+### Features
 
-- **Setup** — Memory bank dizinini ve dosyalarini olusturur, agent rules dosyasina protokol enjekte eder
-- **Update** — Proje durumunu tarar, degisiklikleri tespit eder ve memory bank dosyalarini gunceller
-- **Status** — Aktif baglam ve ilerleme ozetini gosterir
-- **Read** — Tum memory bank dosyalarini organize sekilde sunar
+- **Setup** — Creates the memory bank directory and files, injects protocol into agent rules files
+- **Update** — Scans current project state, detects changes, and updates memory bank files
+- **Status** — Shows a concise summary of active context and progress
+- **Read** — Presents all memory bank files in an organized format
 
-### Desteklenen Agent'lar
+### Supported Agents
 
-| Agent | Rules Dosyasi |
-|-------|---------------|
+| Agent | Rules File |
+|-------|------------|
 | Claude Code | `CLAUDE.md` |
 | Cursor | `.cursorrules`, `.cursor/rules/*.mdc` |
 | Windsurf / Codeium | `.windsurfrules` |
@@ -54,7 +54,7 @@ Oturumlar arasi baglam surekliligi saglayan Memory Bank sistemi. Proje kokunde `
 | Roo Code | `.roo/rules.md` |
 | Aider | `.aider.conf.yml`, `CONVENTIONS.md` |
 
-### Memory Bank Dosya Yapisi
+### Memory Bank File Structure
 
 ```
 memory-bank/
