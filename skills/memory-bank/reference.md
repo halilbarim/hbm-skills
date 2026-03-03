@@ -6,38 +6,54 @@ The Memory Bank protocol must be injected into the agent's rules file so it read
 
 **IMPORTANT:** These files are NOT always in the project root. Always search the ENTIRE project tree (excluding `node_modules/`, `.git/`, `dist/`, `build/`, `.next/`, `vendor/`) to find them.
 
-| Agent | File Name(s) | Common Locations | Notes |
-|-------|-------------|-----------------|-------|
-| Claude Code | `CLAUDE.md` | Project root, subdirectories | May exist at multiple levels |
-| Cursor | `.cursorrules`, `.cursor/rules/*.mdc` | Project root, `.cursor/` directory | Legacy: `.cursorrules` at root. New: `.cursor/rules/` with `.mdc` files |
-| Windsurf / Codeium | `.windsurfrules` | Project root, subdirectories | |
-| Cline | `.clinerules` | Project root, subdirectories | |
-| GitHub Copilot | `copilot-instructions.md` | `.github/` directory | Usually at `.github/copilot-instructions.md` |
-| Roo Code | `rules.md` | `.roo/` directory | Verify parent directory is `.roo/` |
-| Aider | `.aider.conf.yml`, `CONVENTIONS.md` | Project root | Either file |
-| Generic / Other | `AGENTS.md` | Project root | Fallback for unknown agents |
+| Agent | File Name(s) | Standard Location | Notes |
+|-------|-------------|-------------------|-------|
+| Claude Code | `CLAUDE.md`, `.claude/rules/*.md` | Project root or `.claude/` | `CLAUDE.md` at root or `.claude/CLAUDE.md`. Rules directory `.claude/rules/` for modular rules |
+| Cursor | `.cursor/rules/*.mdc` | `.cursor/rules/` directory | `.mdc` files in `.cursor/rules/`. Legacy `.cursorrules` at root is deprecated |
+| Windsurf | `.windsurf/rules/*.md` | `.windsurf/rules/` directory | `.md` files in `.windsurf/rules/`. Legacy `.windsurfrules` at root is deprecated |
+| Cline | `.clinerules/` (dir) or `.clinerules` (file) | Project root | Directory with `.md` files preferred. Single file also supported |
+| GitHub Copilot | `.github/copilot-instructions.md` | `.github/` directory | Additional: `.github/instructions/*.instructions.md` for granular rules |
+| Roo Code | `.roo/rules/*.md` | `.roo/rules/` directory | `.md` files in `.roo/rules/`. Legacy `.roorules` at root is deprecated |
+| Aider | `CONVENTIONS.md`, `.aider.conf.yml` | Project root | `CONVENTIONS.md` for rules, `.aider.conf.yml` for config with `read` param |
+| Antigravity | `.gemini/GEMINI.md` | `.gemini/` directory | Project-level rules. Global: `~/.gemini/GEMINI.md`. Does NOT auto-load `AGENTS.md` |
+| OpenAI Codex | `AGENTS.md` | Project root | Walks from git root to cwd. Also supports `AGENTS.override.md` |
+| Generic / Other | `AGENTS.md` | Project root | Fallback for unrecognized agents. User must manually copy to their agent's rules file |
 
 ### Search Strategy
 
 Use glob patterns to search the entire project tree:
 ```
-**/.cursorrules
-**/.cursor/rules/*.mdc
-**/.windsurfrules
-**/.clinerules
+# Current standard locations
 **/CLAUDE.md
-**/copilot-instructions.md
-**/.roo/rules.md
+**/.claude/CLAUDE.md
+**/.claude/rules/*.md
+**/.cursor/rules/*.mdc
+**/.windsurf/rules/*.md
+**/.clinerules
+**/.clinerules/*.md
+**/.github/copilot-instructions.md
+**/.github/instructions/*.instructions.md
+**/.roo/rules/*.md
 **/.aider.conf.yml
 **/CONVENTIONS.md
+**/.gemini/GEMINI.md
 **/AGENTS.md
+
+# Legacy files (deprecated but still supported)
+**/.cursorrules
+**/.windsurfrules
+**/.roorules
 ```
 
 Exclude directories: `node_modules`, `.git`, `dist`, `build`, `.next`, `vendor`, `.cache`
 
-For file names that may be ambiguous (e.g., `rules.md`, `CONVENTIONS.md`), verify by checking the parent directory or file contents to confirm it's an agent rules file.
+For file names that may be ambiguous (e.g., `CONVENTIONS.md`), verify by checking the parent directory or file contents to confirm it's an agent rules file.
 
 When scanning, check for ALL of these patterns — a project may have multiple agents configured.
+
+### Unrecognized Agent Fallback
+
+When the user's agent is not in the supported list, the skill creates `AGENTS.md` in the project root and injects the Memory Bank protocol into it. The user MUST be clearly warned that they need to manually copy the protocol from `AGENTS.md` into their agent's own rules file for Memory Bank to work correctly. This is critical — without the protocol in the agent's native rules file, the agent will not read memory bank files at session start.
 
 ## Memory Bank File Descriptions
 

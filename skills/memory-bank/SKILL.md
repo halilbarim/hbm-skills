@@ -1,6 +1,6 @@
 ---
 name: memory-bank
-description: "Set up and manage a Memory Bank system for cross-session context continuity across AI coding agents. Use when the user mentions 'memory bank' with any action intent — setup, install, initialize, init, update, refresh, sync, status, check, read, show, review, display, or equivalents in any language (e.g. Turkish: kur, kurulum, güncelle, durumu, oku; German: einrichten, aktualisieren; Spanish: configurar, actualizar; French: installer, mettre à jour). Supports Claude Code, Cursor, Windsurf, Cline, GitHub Copilot, Roo Code, and Aider."
+description: "Set up and manage a Memory Bank system for cross-session context continuity across AI coding agents. Use when the user mentions 'memory bank' with any action intent — setup, install, initialize, init, update, refresh, sync, status, check, read, show, review, display, or equivalents in any language (e.g. Turkish: kur, kurulum, güncelle, durumu, oku; German: einrichten, aktualisieren; Spanish: configurar, actualizar; French: installer, mettre à jour). Supports Claude Code, Cursor, Windsurf, Cline, GitHub Copilot, Roo Code, Aider, Antigravity, and OpenAI Codex."
 ---
 
 # Memory Bank Skill
@@ -45,14 +45,16 @@ Store this choice — all file headings, labels, and descriptions will be in thi
 **2a. Ask the user:**
 
 Ask: "Which AI coding agent(s) do you use for this project?" and present these options:
-- Claude Code → `CLAUDE.md`
-- Cursor → `.cursorrules` or `.cursor/rules/*.mdc`
-- Windsurf / Codeium → `.windsurfrules`
-- Cline → `.clinerules`
-- GitHub Copilot → `copilot-instructions.md` (in `.github/`)
-- Roo Code → `.roo/rules.md`
-- Aider → `.aider.conf.yml` or `CONVENTIONS.md`
-- Other → ask for the rules file name/path, or use `AGENTS.md` as generic fallback
+- Claude Code → `CLAUDE.md` or `.claude/rules/*.md`
+- Cursor → `.cursor/rules/*.mdc` (legacy: `.cursorrules`)
+- Windsurf → `.windsurf/rules/*.md` (legacy: `.windsurfrules`)
+- Cline → `.clinerules/` directory or `.clinerules` file
+- GitHub Copilot → `.github/copilot-instructions.md`
+- Roo Code → `.roo/rules/*.md` (legacy: `.roorules`)
+- Aider → `CONVENTIONS.md` + `.aider.conf.yml`
+- Antigravity → `.gemini/GEMINI.md`
+- OpenAI Codex → `AGENTS.md`
+- Other → ask for the rules file name/path
 
 The user may select multiple agents. Store the selection for Step 3.
 
@@ -66,25 +68,42 @@ Search for the rules files of the agent(s) the user selected:
 
 | Agent | File Names to Search |
 |-------|---------------------|
-| Claude Code | `CLAUDE.md` |
-| Cursor | `.cursorrules`, `.cursor/rules/*.mdc` |
-| Windsurf / Codeium | `.windsurfrules` |
-| Cline | `.clinerules` |
-| GitHub Copilot | `copilot-instructions.md` |
-| Roo Code | `rules.md` (inside `.roo/` directories) |
-| Aider | `.aider.conf.yml`, `CONVENTIONS.md` |
-| Generic | `AGENTS.md` |
+| Claude Code | `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/rules/*.md` |
+| Cursor | `.cursor/rules/*.mdc`, `.cursorrules` (legacy) |
+| Windsurf | `.windsurf/rules/*.md`, `.windsurfrules` (legacy) |
+| Cline | `.clinerules/` (directory), `.clinerules` (file) |
+| GitHub Copilot | `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md` |
+| Roo Code | `.roo/rules/*.md`, `.roorules` (legacy) |
+| Aider | `CONVENTIONS.md`, `.aider.conf.yml` |
+| Antigravity | `.gemini/GEMINI.md` |
+| OpenAI Codex | `AGENTS.md` |
 
 Search strategy:
-1. Use glob patterns like `**/.cursorrules`, `**/.windsurfrules`, `**/CLAUDE.md`, `**/.clinerules`, `**/copilot-instructions.md`, `**/.roo/rules.md`, `**/.aider.conf.yml`, `**/CONVENTIONS.md`, `**/AGENTS.md`, `**/.cursor/rules/*.mdc`
-2. Exclude `node_modules/`, `.git/`, `dist/`, `build/`, `.next/`, `vendor/` directories from search
-3. For ambiguous names (like `rules.md` or `CONVENTIONS.md`), verify by checking parent directory context
+1. Use glob patterns like `**/.cursor/rules/*.mdc`, `**/.windsurf/rules/*.md`, `**/CLAUDE.md`, `**/.claude/rules/*.md`, `**/.clinerules`, `**/.github/copilot-instructions.md`, `**/.roo/rules/*.md`, `**/.aider.conf.yml`, `**/CONVENTIONS.md`, `**/AGENTS.md`, `**/.gemini/GEMINI.md`
+2. Also search for legacy files: `**/.cursorrules`, `**/.windsurfrules`, `**/.roorules`
+3. Exclude `node_modules/`, `.git/`, `dist/`, `build/`, `.next/`, `vendor/` directories from search
+4. For ambiguous names (like `CONVENTIONS.md`), verify by checking parent directory context
 
-**2c. Report results:**
+**2c. Report results and handle unrecognized agents:**
 
 - If the rules file for the user's selected agent(s) already exists, report the path(s) and proceed to inject the protocol
 - If the rules file does not exist, create it at the standard location for that agent
 - If the user selected multiple agents, handle each one
+- **If the user's agent is NOT in the supported list above**, or the agent cannot be matched to a known rules file format:
+  1. Create `AGENTS.md` in the project root as a generic fallback
+  2. Inject the Memory Bank protocol into `AGENTS.md`
+  3. Display a clear warning to the user:
+     ```
+     ⚠️  Your agent ([agent name]) is not in our supported list.
+     The Memory Bank protocol has been written to AGENTS.md in the project root.
+
+     For Memory Bank to work correctly, you MUST manually add or copy
+     the contents of AGENTS.md into your agent's own rules file.
+
+     Please check your agent's documentation for the correct rules file
+     location and format, then ensure the Memory Bank protocol is included.
+     ```
+  4. This ensures the protocol content is available even if automatic injection isn't possible
 
 ### Step 3: Inject Protocol into Rules Files
 

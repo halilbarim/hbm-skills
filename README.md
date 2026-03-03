@@ -46,13 +46,17 @@ A cross-session context continuity system for AI coding agents. Creates a `memor
 
 | Agent | Rules File |
 |-------|------------|
-| Claude Code | `CLAUDE.md` |
-| Cursor | `.cursorrules`, `.cursor/rules/*.mdc` |
-| Windsurf / Codeium | `.windsurfrules` |
-| Cline | `.clinerules` |
-| GitHub Copilot | `copilot-instructions.md` |
-| Roo Code | `.roo/rules.md` |
-| Aider | `.aider.conf.yml`, `CONVENTIONS.md` |
+| Claude Code | `CLAUDE.md`, `.claude/rules/*.md` |
+| Cursor | `.cursor/rules/*.mdc` |
+| Windsurf | `.windsurf/rules/*.md` |
+| Cline | `.clinerules/` directory |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+| Roo Code | `.roo/rules/*.md` |
+| Aider | `CONVENTIONS.md`, `.aider.conf.yml` |
+| Antigravity | `.gemini/GEMINI.md` |
+| OpenAI Codex | `AGENTS.md` |
+
+> **Not in the list?** The skill will create an `AGENTS.md` fallback and guide you to copy the protocol into your agent's own rules file.
 
 ### Memory Bank File Structure
 
