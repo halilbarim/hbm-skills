@@ -57,6 +57,8 @@ When the user's agent is not in the supported list, the skill creates `AGENTS.md
 
 ## Memory Bank File Descriptions
 
+### Core Files (Always Created)
+
 | File | Purpose | When to Update |
 |------|---------|----------------|
 | `RULES.md` | Universal rules for all agents. Immutable after creation. | **NEVER** — created once during setup |
@@ -67,7 +69,24 @@ When the user's agent is not in the supported list, the skill creates `AGENTS.md
 | `activeContext.md` | Current focus, recent changes, active decisions, next steps | Most frequently updated — after each significant work session |
 | `progress.md` | Completed features, work in progress, known issues, blockers | When features complete, new issues found, or WIP status changes |
 
+### Extended Files (Optional — Created with Extended Profile)
+
+| File | Purpose | When to Update |
+|------|---------|----------------|
+| `businessLogic.md` | Domain rules, business workflows, validation logic, domain glossary | When business rules change, new workflows added, domain logic updated |
+| `dataModel.md` | Database schema, entity relationships, data flow, migrations | When schema changes, new entities added, migrations run |
+| `dependencies.md` | Detailed dependency map, version constraints, upgrade notes | When packages added/removed/upgraded, incompatibilities found |
+| `events.md` | Event-driven architecture, pub/sub topics, event schemas, error handling | When new events added, event schemas change, brokers reconfigured |
+| `externalIntegrations.md` | 3rd party APIs, webhooks, service contracts, integration patterns | When new integrations added, API contracts change, services updated |
+| `featureToggles.md` | Feature flags, A/B tests, rollout rules, deprecated flags | When flags added/removed, rollout percentages change, tests start/end |
+| `observability.md` | Logging, monitoring, tracing, alerting, health checks, error tracking | When monitoring setup changes, new alerts added, dashboards updated |
+| `security.md` | Auth flows, authorization model, security policies, vulnerability tracking | When auth changes, new vulnerabilities found, policies updated |
+| `technicalDebt.md` | Known debt items, refactoring priorities, cleanup plans | When new debt identified, refactoring completed, priorities shift |
+| `contextCoverage.md` | Memory bank completeness tracking, gaps, staleness risk | After each update cycle — tracks how well memory bank covers the project |
+
 ## Update Triggers
+
+### Core File Triggers
 
 | Event | Files to Update |
 |-------|----------------|
@@ -81,6 +100,21 @@ When the user's agent is not in the supported list, the skill creates `AGENTS.md
 | Product direction changed | `productContext.md` |
 | Dev environment changed | `techContext.md` |
 | Session ended | `activeContext.md` + `progress.md` |
+
+### Extended File Triggers (only if the file exists)
+
+| Event | Files to Update |
+|-------|----------------|
+| Business rule changed | `businessLogic.md` |
+| DB schema migrated | `dataModel.md` |
+| Package added/upgraded/removed | `dependencies.md` |
+| Event schema changed / new event | `events.md` |
+| New 3rd party integration | `externalIntegrations.md` |
+| Feature flag added/removed | `featureToggles.md` |
+| Monitoring/alerting changed | `observability.md` |
+| Auth or security policy changed | `security.md` |
+| Technical debt identified/resolved | `technicalDebt.md` |
+| Memory bank update cycle completed | `contextCoverage.md` |
 
 ## Protocol Block
 

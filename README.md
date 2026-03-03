@@ -33,7 +33,7 @@ npx skills add halilbarim/hbm-skills@memory-bank
 
 ## memory-bank
 
-A cross-session context continuity system for AI coding agents. Creates a `memory-bank/` directory in the project root with 7 structured markdown files that capture project knowledge, architecture decisions, progress, and active context.
+A cross-session context continuity system for AI coding agents. Creates a `memory-bank/` directory in the project root with structured markdown files that capture project knowledge, architecture decisions, progress, and active context.
 
 ### Features
 
@@ -41,6 +41,13 @@ A cross-session context continuity system for AI coding agents. Creates a `memor
 - **Update** — Scans current project state, detects changes, and updates memory bank files
 - **Status** — Shows a concise summary of active context and progress
 - **Read** — Presents all memory bank files in an organized format
+
+### Profiles
+
+During setup, choose the profile that fits your project:
+
+- **Basic** (7 core files) — For small/medium projects
+- **Extended** (7 core + up to 10 optional files) — For enterprise/production projects
 
 ### Supported Agents
 
@@ -60,6 +67,8 @@ A cross-session context continuity system for AI coding agents. Creates a `memor
 
 ### Memory Bank File Structure
 
+**Core files (always created):**
+
 ```
 memory-bank/
 ├── RULES.md              # Universal rules (immutable)
@@ -69,6 +78,22 @@ memory-bank/
 ├── techContext.md         # Tech stack & dependencies
 ├── activeContext.md       # Current focus & recent changes
 └── progress.md            # Completed features & WIP
+```
+
+**Extended files (optional, pick what you need):**
+
+```
+memory-bank/
+├── businessLogic.md      # Domain rules & business workflows
+├── dataModel.md          # DB schema & entity relationships
+├── dependencies.md       # Detailed dependency map & versions
+├── events.md             # Event-driven architecture & schemas
+├── externalIntegrations.md # 3rd party APIs & webhooks
+├── featureToggles.md     # Feature flags & A/B tests
+├── observability.md      # Logging, monitoring & alerting
+├── security.md           # Auth, policies & vulnerabilities
+├── technicalDebt.md      # Known debt & refactoring plans
+└── contextCoverage.md    # Memory bank completeness tracking
 ```
 
 ---
@@ -81,7 +106,7 @@ hbm-skills/
 │   └── memory-bank/
 │       ├── SKILL.md           # Main instruction file
 │       ├── reference.md       # Agent mapping & update triggers
-│       └── templates/         # 8 template files
+│       └── templates/         # 18 template files (7 core + 10 extended + 1 protocol)
 ├── README.md
 ├── LICENSE
 └── .gitignore

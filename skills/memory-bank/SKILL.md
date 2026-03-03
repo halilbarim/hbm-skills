@@ -30,13 +30,39 @@ Route to the matching flow below. If the intent is ambiguous, ask the user which
 
 Follow these steps in order. Get user confirmation at each major step.
 
-### Step 1: Language Preference
+### Step 1: Language & Profile Preference
+
+**1a. Language:**
 
 Ask the user which language the memory bank files should be written in:
 - **TR** (Turkish)
 - **EN** (English)
 
 Store this choice — all file headings, labels, and descriptions will be in this language. Templates in `templates/` are in English; translate headings and labels to the chosen language when filling them.
+
+**1b. Profile:**
+
+Ask the user which profile they want:
+
+- **Basic** (7 files) — Suitable for small/medium projects. Includes the core files for project context, architecture, tech stack, active context, and progress tracking.
+- **Extended** (7 core + optional extra files) — Suitable for enterprise/production projects. Includes the core files plus specialized files for business logic, data models, security, observability, and more.
+
+If the user selects **Extended**, present the list of optional extended files and let them pick which ones they need:
+
+| Extended File | Purpose |
+|---------------|---------|
+| `businessLogic.md` | Domain rules, business workflows, validation logic |
+| `dataModel.md` | Database schema, entity relationships, data flow |
+| `dependencies.md` | Detailed dependency map, version constraints, upgrade notes |
+| `events.md` | Event-driven architecture, pub/sub topics, event schemas |
+| `externalIntegrations.md` | 3rd party APIs, webhooks, service contracts |
+| `featureToggles.md` | Feature flags, A/B tests, gradual rollout rules |
+| `observability.md` | Logging, monitoring, tracing, alerting setup |
+| `security.md` | Auth flows, security policies, vulnerability tracking |
+| `technicalDebt.md` | Known debt items, refactoring priorities, cleanup plans |
+| `contextCoverage.md` | Memory bank completeness tracking, coverage gaps |
+
+The user can select all, some, or none. Store the selection for Steps 4 and 5.
 
 ### Step 2: Ask User Which Agent(s) They Use
 
@@ -120,7 +146,7 @@ Check if `memory-bank/` exists in the project root:
 - If it exists, check which files are present and only create missing ones
 - If it doesn't exist, create it
 
-Required files (7 total):
+**Core files (always created — 7 total):**
 1. `RULES.md`
 2. `projectbrief.md`
 3. `productContext.md`
@@ -128,6 +154,18 @@ Required files (7 total):
 5. `techContext.md`
 6. `activeContext.md`
 7. `progress.md`
+
+**Extended files (only if user selected Extended profile — based on their selection):**
+8. `businessLogic.md`
+9. `dataModel.md`
+10. `dependencies.md`
+11. `events.md`
+12. `externalIntegrations.md`
+13. `featureToggles.md`
+14. `observability.md`
+15. `security.md`
+16. `technicalDebt.md`
+17. `contextCoverage.md`
 
 ### Step 5: Fill Templates with Project Data
 
@@ -160,6 +198,8 @@ Run the validation checklist and display results:
 ```
 [✓/✗] Rules file found and Memory Bank protocol injected
 [✓/✗] memory-bank/ directory exists
+
+Core files:
 [✓/✗] RULES.md exists
 [✓/✗] projectbrief.md exists
 [✓/✗] productContext.md exists
@@ -169,12 +209,22 @@ Run the validation checklist and display results:
 [✓/✗] progress.md exists
 ```
 
+If Extended profile was selected, also validate the selected extended files:
+```
+Extended files:
+[✓/✗] businessLogic.md exists
+[✓/✗] dataModel.md exists
+[✓/✗] dependencies.md exists
+... (only show files the user selected)
+```
+
 If all pass, show completion message:
 ```
 Memory Bank setup complete!
-Agent: [detected agent name]
+Profile: [Basic/Extended]
+Agent: [agent name]
 Rules file: [file path]
-Memory Bank: memory-bank/ (7 files)
+Memory Bank: memory-bank/ ([N] files)
 
 From now on, memory-bank/ files will be read at every session start.
 Try: "memory bank status" or "memory bank read"
